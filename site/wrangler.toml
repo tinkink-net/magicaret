@@ -1,0 +1,6 @@
+name = "magicaret-site"
+compatibility_date = "2025-01-04"
+
+[assets]
+directory = "."
+binding = "ASSETS"

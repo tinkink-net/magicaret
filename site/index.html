@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magicaret - Beautiful Animated Caret Library</title>
+  <script type="importmap">
+    {
+      "imports": {
+        "magicaret": "./dist/index.js"
+      }
+    }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .hero p {
+      font-size: 20px;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: white;
+      color: #667eea;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .section h3 {
+      font-size: 24px;
+      margin: 30px 0 15px;
+      color: #555;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .feature {
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+
+    .feature h4 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #667eea;
+    }
+
+    .feature p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .demo-container {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .demo-input {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .demo-input:focus {
+      border-color: #667eea;
+    }
+
+    .style-selector {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .style-btn {
+      padding: 8px 16px;
+      border: 2px solid #e0e0e0;
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+
+    .style-btn:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+    }
+
+    .style-btn.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 20px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 15px 0;
+    }
+
+    code {
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+    }
+
+    .install-cmd {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 15px 20px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      display: inline-block;
+      margin: 10px 0;
+    }
+
+    .framework-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .framework-tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.3s;
+    }
+
+    .framework-tab:hover {
+      color: #667eea;
+    }
+
+    .framework-tab.active {
+      border-bottom-color: #667eea;
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    .framework-content {
+      display: none;
+    }
+
+    .framework-content.active {
+      display: block;
+    }
+
+    .options-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    .options-table th,
+    .options-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .options-table th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .options-table code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: white;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>✨ Magicaret</h1>
+    <p>A beautiful and smooth animated caret library for web applications</p>
+    <div class="hero-buttons">
+      <a href="#demo" class="btn btn-primary">Try Demo</a>
+      <a href="#installation" class="btn btn-secondary">Get Started</a>
+      <a href="https://github.com/toobug/magicaret" class="btn btn-secondary">GitHub</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <h2>Features</h2>
+      <div class="features">
+        <div class="feature">
+          <h4>🎨 Beautiful Styles</h4>
+          <p>8 built-in style presets including rainbow, neon, fire, and more</p>
+        </div>
+        <div class="feature">
+          <h4>🚀 Smooth Animations</h4>
+          <p>Fluid caret movement with comet trail effects</p>
+        </div>
+        <div class="feature">
+          <h4>⚛️ Multi-Framework</h4>
+          <p>Support for Vanilla JS, React, and Vue</p>
+        </div>
+        <div class="feature">
+          <h4>⚡ Easy to Use</h4>
+          <p>Simple API with no dependencies</p>
+        </div>
+        <div class="feature">
+          <h4>🎯 Customizable</h4>
+          <p>Customize color, size, animation, and more</p>
+        </div>
+        <div class="feature">
+          <h4>📝 TypeScript</h4>
+          <p>Full TypeScript support included</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="demo">
+      <h2>Live Demo</h2>
+      <p>Try typing in the input below to see the animated caret in action!</p>
+
+      <div class="demo-container">
+        <label>Choose a style:</label>
+        <div class="style-selector">
+          <button class="style-btn active" data-style="default">Default</button>
+          <button class="style-btn" data-style="neon">Neon</button>
+          <button class="style-btn" data-style="rainbow">Rainbow</button>
+          <button class="style-btn" data-style="fire">Fire</button>
+          <button class="style-btn" data-style="ocean">Ocean</button>
+          <button class="style-btn" data-style="purple">Purple</button>
+          <button class="style-btn" data-style="green">Green</button>
+          <button class="style-btn" data-style="pink">Pink</button>
+        </div>
+        <input type="text" id="demoInput" class="demo-input" placeholder="Type something here..." />
+      </div>
+    </div>
+
+    <div class="section" id="installation">
+      <h2>Installation</h2>
+      <p>Install Magicaret using your favorite package manager:</p>
+      <div class="install-cmd">pnpm install magicaret</div>
+      <div class="install-cmd">npm install magicaret</div>
+      <div class="install-cmd">yarn add magicaret</div>
+    </div>
+
+    <div class="section" id="usage">
+      <h2>Usage</h2>
+
+      <div class="framework-tabs">
+        <div class="framework-tab active" data-framework="vanilla">Vanilla JS</div>
+        <div class="framework-tab" data-framework="react">React</div>
+        <div class="framework-tab" data-framework="vue">Vue</div>
+      </div>
+
+      <div class="framework-content active" id="vanilla-content">
+        <pre><code>import { Magicaret } from 'magicaret'
+
+const input = document.getElementById('my-input')
+const magicaret = new Magicaret(input, {
+  style: 'rainbow',
+  size: 3,
+  trailLength: 15
+})
+
+// Update options later
+magicaret.updateOptions({
+  style: 'neon'
+})
+
+// Clean up
+magicaret.destroy()</code></pre>
+      </div>
+
+      <div class="framework-content" id="react-content">
+        <pre><code>import { useMagicaretDirective } from 'magicaret/react'
+
+function App() {
+  const inputRef = useMagicaretDirective({
+    style: 'rainbow',
+    size: 3
+  })
+
+  return &lt;input ref={inputRef} placeholder="Type something..." /&gt;
+}</code></pre>
+      </div>
+
+      <div class="framework-content" id="vue-content">
+        <pre><code>&lt;template&gt;
+  &lt;input
+    v-magicaret="{ style: 'rainbow', size: 3 }"
+    placeholder="Type something..."
+  /&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { vMagicaret } from 'magicaret/vue'
+&lt;/script&gt;</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="options">
+      <h2>Options</h2>
+      <table class="options-table">
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>color</code></td>
+            <td><code>string | string[]</code></td>
+            <td><code>undefined</code></td>
+            <td>Custom color or array of colors for gradient</td>
+          </tr>
+          <tr>
+            <td><code>size</code></td>
+            <td><code>number</code></td>
+            <td><code>2</code></td>
+            <td>Width of the caret in pixels</td>
+          </tr>
+          <tr>
+            <td><code>animationDuration</code></td>
+            <td><code>number</code></td>
+            <td><code>150</code></td>
+            <td>Duration of caret animation in milliseconds</td>
+          </tr>
+          <tr>
+            <td><code>trailLength</code></td>
+            <td><code>number</code></td>
+            <td><code>10</code></td>
+            <td>Number of trail particles</td>
+          </tr>
+          <tr>
+            <td><code>trailOpacity</code></td>
+            <td><code>number</code></td>
+            <td><code>0.5</code></td>
+            <td>Opacity of trail particles (0-1)</td>
+          </tr>
+          <tr>
+            <td><code>trailWidth</code></td>
+            <td><code>number</code></td>
+            <td><code>2</code></td>
+            <td>Width of trail particles</td>
+          </tr>
+          <tr>
+            <td><code>style</code></td>
+            <td><code>string</code></td>
+            <td><code>'default'</code></td>
+            <td>Built-in style preset</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section" id="styles">
+      <h2>Built-in Styles</h2>
+      <ul>
+        <li><strong>default</strong> - Purple to indigo gradient</li>
+        <li><strong>neon</strong> - Green to cyan gradient</li>
+        <li><strong>rainbow</strong> - Full rainbow gradient</li>
+        <li><strong>fire</strong> - Red to orange to yellow gradient</li>
+        <li><strong>ocean</strong> - Light blue to dark blue gradient</li>
+        <li><strong>purple</strong> - Purple gradient</li>
+        <li><strong>green</strong> - Green gradient</li>
+        <li><strong>pink</strong> - Pink gradient</li>
+      </ul>
+    </div>
+
+    <div class="section" id="custom-colors">
+      <h2>Custom Colors</h2>
+      <p>You can also use custom colors:</p>
+
+      <h3>Single Color</h3>
+      <pre><code>const magicaret = new Magicaret(input, {
+  color: '#ff0000'
+})</code></pre>
+
+      <h3>Gradient Colors</h3>
+      <pre><code>const magicaret = new Magicaret(input, {
+  color: ['#ff0000', '#00ff00', '#0000ff']
+})</code></pre>
+    </div>
+
+    <div class="section" id="examples">
+      <h2>Examples</h2>
+
+      <h3>Simple input with neon style</h3>
+      <pre><code>const input = document.getElementById('my-input')
+new Magicaret(input, { style: 'neon' })</code></pre>
+
+      <h3>Large caret with long trail</h3>
+      <pre><code>const magicaret = new Magicaret(input, {
+  size: 4,
+  trailLength: 20,
+  trailOpacity: 0.7
+})</code></pre>
+
+      <h3>Custom gradient colors</h3>
+      <pre><code>const magicaret = new Magicaret(input, {
+  color: ['#ff6b6b', '#feca57', '#48dbfb']
+})</code></pre>
+    </div>
+  </div>
+
+  <footer>
+    <p>MIT License • Made with ❤️ by <a href="https://github.com/toobug">TooBug</a></p>
+  </footer>
+
+  <script type="module">
+    import { Magicaret } from 'magicaret'
+
+    const demoInput = document.getElementById('demoInput')
+    const styleButtons = document.querySelectorAll('.style-btn')
+    const frameworkTabs = document.querySelectorAll('.framework-tab')
+    const frameworkContents = document.querySelectorAll('.framework-content')
+
+    let currentStyle = 'default'
+    const demoMagicaret = new Magicaret(demoInput, { style: currentStyle })
+
+    styleButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        styleButtons.forEach(b => b.classList.remove('active'))
+        btn.classList.add('active')
+        currentStyle = btn.dataset.style
+        demoMagicaret.updateOptions({ style: currentStyle })
+      })
+    })
+
+    frameworkTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        frameworkTabs.forEach(t => t.classList.remove('active'))
+        tab.classList.add('active')
+
+        const framework = tab.dataset.framework
+        frameworkContents.forEach(content => {
+          content.classList.remove('active')
+          if (content.id === `${framework}-content`) {
+            content.classList.add('active')
+          }
+        })
+      })
+    })
+  </script>
+</body>
+</html>
