@@ -2,6 +2,7 @@
   "name": "magicaret",
   "version": "1.0.0",
   "description": "A beautiful and smooth animated caret library for web applications",
+  "homepage": "https://github.com/tinkink-net/magicaret",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

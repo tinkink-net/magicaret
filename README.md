@@ -2,6 +2,10 @@
 
 A beautiful and smooth animated caret library for web applications. Transform your input caret into a custom caret with beautiful styles and smooth animations.
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://magicaret.tink.ink)
+[![npm](https://img.shields.io/npm/v/magicaret)](https://www.npmjs.com/package/magicaret)
+[![License](https://img.shields.io/npm/l/magicaret)](LICENSE)
+
 ## Features
 
 - **Multi-framework Support**: Vanilla JS, React, and Vue
@@ -40,75 +44,78 @@ magicaret.destroy()
 
 ## React Usage
 
-### Using the MagicaretInput component
+### Using the useMagicaretDirective hook
 
 ```jsx
-import { MagicaretInput } from 'magicaret/react'
+import { useMagicaretDirective } from 'magicaret/react'
 
 function App() {
-  return (
-    <MagicaretInput
-      placeholder="Type something..."
-      magicaretOptions={{
-        style: 'rainbow',
-        size: 3,
-        trailLength: 15
-      }}
-    />
-  )
-}
-```
-
-### Using the useMagicaret hook
-
-```jsx
-import { useMagicaret } from 'magicaret/react'
-
-function App() {
-  const { elementRef } = useMagicaret({
+  const nameRef = useMagicaretDirective({
     style: 'rainbow',
     size: 3
   })
 
-  return <input ref={elementRef} placeholder="Type something..." />
+  return <input ref={nameRef} placeholder="Type something..." />
+}
+```
+
+### Multiple inputs with same options
+
+```jsx
+import { useMagicaretDirective } from 'magicaret/react'
+
+function App() {
+  const inputRef = useMagicaretDirective({ style: 'neon' })
+
+  return (
+    <div>
+      <input ref={inputRef} placeholder="Name" />
+      <input ref={inputRef} placeholder="Email" />
+      <textarea ref={inputRef} placeholder="Message" />
+    </div>
+  )
 }
 ```
 
 ## Vue Usage
 
-### Using the MagicaretInput component
+### Using the v-magicaret directive
 
 ```vue
 <template>
-  <MagicaretInput
+  <input
+    v-magicaret="{ style: 'rainbow', size: 3 }"
     placeholder="Type something..."
-    :magicaretOptions="{
-      style: 'rainbow',
-      size: 3,
-      trailLength: 15
-    }"
   />
 </template>
 
 <script setup>
-import { MagicaretInput } from 'magicaret/vue'
+import { vMagicaret } from 'magicaret/vue'
 </script>
 ```
 
-### Using the useMagicaret composable
+### Multiple inputs with same options
 
 ```vue
 <template>
-  <input ref="elementRef" placeholder="Type something..." />
+  <div>
+    <input
+      v-magicaret="{ style: 'neon' }"
+      placeholder="Name"
+    />
+    <input
+      v-magicaret="{ style: 'neon' }"
+      placeholder="Email"
+    />
+    <textarea
+      v-magicaret="{ style: 'neon' }"
+      placeholder="Message"
+    />
+  </div>
 </template>
 
 <script setup>
-import { useMagicaret } from 'magicaret/vue'
-
-const { elementRef } = useMagicaret({
-  style: 'rainbow',
-  size: 3
-})
+import { vMagicaret } from 'magicaret/vue'
 </script>
 ```
 
