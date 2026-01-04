@@ -7,7 +7,8 @@
   <script type="importmap">
     {
       "imports": {
-        "magicaret": "https://esm.sh/magicaret"
+        "magicaret": "https://esm.sh/magicaret",
+        "shiki": "https://esm.sh/shiki@3.20.0/bundle/web"
       }
     }
   </script>
@@ -141,6 +142,13 @@
       margin: 20px 0;
     }
 
+    .demo-container label {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: #555;
+    }
+
     .demo-input {
       width: 100%;
       padding: 15px;
@@ -149,6 +157,18 @@
       font-size: 16px;
       outline: none;
       font-family: inherit;
+    }
+
+    .demo-textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+      font-family: inherit;
+      min-height: 120px;
+      resize: vertical;
     }
 
     .demo-input:focus {
@@ -191,6 +211,11 @@
       border-radius: 10px;
       overflow-x: auto;
       margin: 15px 0;
+    }
+
+    pre.shiki {
+      background: transparent;
+      padding: 20px;
     }
 
     code {
@@ -300,7 +325,7 @@
     <div class="hero-buttons">
       <a href="#demo" class="btn btn-primary">Try Demo</a>
       <a href="#installation" class="btn btn-secondary">Get Started</a>
-      <a href="https://github.com/toobug/magicaret" class="btn btn-secondary">GitHub</a>
+      <a href="https://github.com/tinkink-net/magicaret" class="btn btn-secondary">GitHub</a>
     </div>
   </div>
 
@@ -337,7 +362,7 @@
 
     <div class="section" id="demo">
       <h2>Live Demo</h2>
-      <p>Try typing in the input below to see the animated caret in action!</p>
+      <p>Try typing in the inputs below to see the animated caret in action!</p>
 
       <div class="demo-container">
         <label>Choose a style:</label>
@@ -351,7 +376,16 @@
           <button class="style-btn" data-style="green">Green</button>
           <button class="style-btn" data-style="pink">Pink</button>
         </div>
+      </div>
+
+      <div class="demo-container">
+        <label>Single line input:</label>
         <input type="text" id="demoInput" class="demo-input" placeholder="Type something here..." />
+      </div>
+
+      <div class="demo-container">
+        <label>Multi-line textarea:</label>
+        <textarea id="demoTextarea" class="demo-textarea" placeholder="Type something here..."></textarea>
       </div>
     </div>
 
@@ -365,6 +399,7 @@
 
     <div class="section" id="usage">
       <h2>Usage</h2>
+      <p><strong>Note:</strong> React and Vue integrations require npm installation. For CDN usage, use the Vanilla JS approach with the <code>Magicaret</code> class.</p>
 
       <div class="framework-tabs">
         <div class="framework-tab active" data-framework="vanilla">Vanilla JS</div>
@@ -373,7 +408,7 @@
       </div>
 
       <div class="framework-content active" id="vanilla-content">
-        <pre><code>import { Magicaret } from 'magicaret'
+        <pre><code class="language-javascript">import { Magicaret } from 'magicaret'
 
 const input = document.getElementById('my-input')
 const magicaret = new Magicaret(input, {
@@ -392,7 +427,8 @@ magicaret.destroy()</code></pre>
       </div>
 
       <div class="framework-content" id="react-content">
-        <pre><code>import { useMagicaretDirective } from 'magicaret/react'
+        <pre><code class="language-javascript">// With npm
+import { useMagicaretDirective } from 'magicaret/react'
 
 function App() {
   const inputRef = useMagicaretDirective({
@@ -405,7 +441,8 @@ function App() {
       </div>
 
       <div class="framework-content" id="vue-content">
-        <pre><code>&lt;template&gt;
+        <pre><code class="language-vue">// With npm
+&lt;template&gt;
   &lt;input
     v-magicaret="{ style: 'rainbow', size: 3 }"
     placeholder="Type something..."
@@ -495,12 +532,12 @@ import { vMagicaret } from 'magicaret/vue'
       <p>You can also use custom colors:</p>
 
       <h3>Single Color</h3>
-      <pre><code>const magicaret = new Magicaret(input, {
+      <pre><code class="language-javascript">const magicaret = new Magicaret(input, {
   color: '#ff0000'
 })</code></pre>
 
       <h3>Gradient Colors</h3>
-      <pre><code>const magicaret = new Magicaret(input, {
+      <pre><code class="language-javascript">const magicaret = new Magicaret(input, {
   color: ['#ff0000', '#00ff00', '#0000ff']
 })</code></pre>
     </div>
@@ -509,37 +546,65 @@ import { vMagicaret } from 'magicaret/vue'
       <h2>Examples</h2>
 
       <h3>Simple input with neon style</h3>
-      <pre><code>const input = document.getElementById('my-input')
+      <pre><code class="language-javascript">const input = document.getElementById('my-input')
 new Magicaret(input, { style: 'neon' })</code></pre>
 
       <h3>Large caret with long trail</h3>
-      <pre><code>const magicaret = new Magicaret(input, {
+      <pre><code class="language-javascript">const magicaret = new Magicaret(input, {
   size: 4,
   trailLength: 20,
   trailOpacity: 0.7
 })</code></pre>
 
       <h3>Custom gradient colors</h3>
-      <pre><code>const magicaret = new Magicaret(input, {
+      <pre><code class="language-javascript">const magicaret = new Magicaret(input, {
   color: ['#ff6b6b', '#feca57', '#48dbfb']
 })</code></pre>
     </div>
   </div>
 
   <footer>
-    <p>MIT License • Made with ❤️ by <a href="https://github.com/toobug">TooBug</a></p>
+    <p>MIT License • Made with ❤️ by <a href="https://tink.ink">Tinkink</a></p>
   </footer>
 
   <script type="module">
     import { Magicaret } from 'magicaret'
+    import { createHighlighter } from 'shiki'
+
+    const highlighter = await createHighlighter({
+      themes: ['github-dark'],
+      langs: ['javascript', 'typescript', 'jsx', 'tsx', 'vue', 'html']
+    })
+
+    async function highlightCodeBlocks() {
+      const codeBlocks = document.querySelectorAll('pre code')
+
+      for (const block of codeBlocks) {
+        const code = block.textContent
+        const pre = block.parentElement
+        const lang = pre.className.match(/language-(\w+)/)?.[1] || 'javascript'
+
+        const html = highlighter.codeToHtml(code, {
+          lang,
+          theme: 'github-dark'
+        })
+
+        pre.innerHTML = html
+        pre.classList.add('shiki')
+      }
+    }
+
+    await highlightCodeBlocks()
 
     const demoInput = document.getElementById('demoInput')
+    const demoTextarea = document.getElementById('demoTextarea')
     const styleButtons = document.querySelectorAll('.style-btn')
     const frameworkTabs = document.querySelectorAll('.framework-tab')
     const frameworkContents = document.querySelectorAll('.framework-content')
 
     let currentStyle = 'default'
     const demoMagicaret = new Magicaret(demoInput, { style: currentStyle })
+    const demoTextareaMagicaret = new Magicaret(demoTextarea, { style: currentStyle })
 
     styleButtons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -547,6 +612,7 @@ new Magicaret(input, { style: 'neon' })</code></pre>
         btn.classList.add('active')
         currentStyle = btn.dataset.style
         demoMagicaret.updateOptions({ style: currentStyle })
+        demoTextareaMagicaret.updateOptions({ style: currentStyle })
       })
     })
 
