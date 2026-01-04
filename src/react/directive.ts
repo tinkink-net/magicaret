@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Magicaret } from '../Magicaret'
 import type { MagicaretOptions } from '../types'
 
-export function useMagicaret(options: MagicaretOptions = {}) {
+export function useMagicaretDirective(options: MagicaretOptions = {}) {
   const magicaretRef = useRef<Magicaret | null>(null)
   const elementRef = useRef<HTMLElement | null>(null)
 
@@ -24,5 +24,5 @@ export function useMagicaret(options: MagicaretOptions = {}) {
     }
   }, [options])
 
-  return { elementRef }
+  return elementRef
 }

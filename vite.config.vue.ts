@@ -8,7 +8,7 @@ export default defineConfig({
     vue(),
     dts({
       tsconfigPath: './tsconfig.json',
-      rollupTypes: true,
+      rollupTypes: false,
       outDir: 'dist/vue',
     }),
   ],

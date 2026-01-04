@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import { MagicaretInput } from 'magicaret/react'
+import { useMagicaretDirective } from 'magicaret/react'
 
 const styles = ['default', 'neon', 'rainbow', 'fire', 'ocean', 'purple', 'green', 'pink'] as const
 
 function App() {
   const [selectedStyle, setSelectedStyle] = useState<'default' | 'neon' | 'rainbow' | 'fire' | 'ocean' | 'purple' | 'green' | 'pink'>('default')
+  const nameRef = useMagicaretDirective({ style: selectedStyle })
+  const emailRef = useMagicaretDirective({ style: selectedStyle })
+  const messageRef = useMagicaretDirective({ style: selectedStyle })
 
   return (
     <div className="container">
@@ -28,31 +31,30 @@ function App() {
 
       <div className="input-group">
         <label htmlFor="name">Your Name:</label>
-        <MagicaretInput
+        <input
           id="name"
+          ref={nameRef as any}
           placeholder="Type your name here..."
-          magicaretOptions={{ style: selectedStyle }}
         />
       </div>
 
       <div className="input-group">
         <label htmlFor="email">Email Address:</label>
-        <MagicaretInput
+        <input
           id="email"
           type="email"
+          ref={emailRef as any}
           placeholder="your@email.com"
-          magicaretOptions={{ style: selectedStyle }}
         />
       </div>
 
       <div className="input-group">
         <label htmlFor="message">Message:</label>
-        <MagicaretInput
+        <textarea
           id="message"
-          as="textarea"
+          ref={messageRef as any}
           placeholder="Write your message here..."
-          magicaretOptions={{ style: selectedStyle }}
-        />
+        ></textarea>
       </div>
 
       <div className="info">

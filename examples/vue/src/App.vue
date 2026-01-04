@@ -19,31 +19,30 @@
 
     <div class="input-group">
       <label for="name">Your Name:</label>
-      <MagicaretInput
+      <input
         id="name"
+        v-magicaret="{ style: selectedStyle }"
         placeholder="Type your name here..."
-        :magicaret-options="{ style: selectedStyle }"
       />
     </div>
 
     <div class="input-group">
       <label for="email">Email Address:</label>
-      <MagicaretInput
+      <input
         id="email"
+        v-magicaret="{ style: selectedStyle }"
         type="email"
         placeholder="your@email.com"
-        :magicaret-options="{ style: selectedStyle }"
       />
     </div>
 
     <div class="input-group">
       <label for="message">Message:</label>
-      <MagicaretInput
+      <textarea
         id="message"
-        as="textarea"
+        v-magicaret="{ style: selectedStyle }"
         placeholder="Write your message here..."
-        :magicaret-options="{ style: selectedStyle }"
-      />
+      ></textarea>
     </div>
 
     <div class="info">
@@ -54,11 +53,55 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { MagicaretInput } from 'magicaret/vue'
+import { vMagicaret } from 'magicaret/vue'
 
 const styles = ['default', 'neon', 'rainbow', 'fire', 'ocean', 'purple', 'green', 'pink'] as const
 const selectedStyle = ref<'default' | 'neon' | 'rainbow' | 'fire' | 'ocean' | 'purple' | 'green' | 'pink'>('default')
 </script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+</style>
+
+<style>
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  outline: none;
+  font-family: inherit;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  border-color: #667eea;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+</style>
 
 <style scoped>
 .container {
@@ -91,30 +134,6 @@ label {
   color: #555;
   font-weight: 500;
   font-size: 14px;
-}
-
-input[type="text"],
-input[type="email"],
-textarea {
-  width: 100%;
-  padding: 15px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  font-size: 16px;
-  transition: border-color 0.3s;
-  outline: none;
-  font-family: inherit;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-textarea:focus {
-  border-color: #667eea;
-}
-
-textarea {
-  min-height: 120px;
-  resize: vertical;
 }
 
 .style-selector {

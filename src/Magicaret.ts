@@ -1,5 +1,6 @@
 import { MagicaretOptions, NormalizedMagicaretOptions, CaretPosition, TrailParticle } from './types'
 import { getColors, getGradient } from './styles'
+import { getCaretPosition, createMirrorElement, updateMirrorElement } from './caretPosition'
 
 export class Magicaret {
   private element: HTMLElement
@@ -8,7 +9,6 @@ export class Magicaret {
   private canvas: HTMLCanvasElement
   private ctx: CanvasRenderingContext2D
   private trailParticles: TrailParticle[] = []
-  private currentPosition: CaretPosition = { x: 0, y: 0 }
   private targetPosition: CaretPosition = { x: 0, y: 0 }
   private animationId: number | null = null
   private isFocused: boolean = false
@@ -123,71 +123,7 @@ export class Magicaret {
   }
 
   private createMirrorElement(): HTMLDivElement {
-    const mirror = document.createElement('div')
-    mirror.style.position = 'absolute'
-    mirror.style.visibility = 'hidden'
-    mirror.style.whiteSpace = 'pre-wrap'
-    mirror.style.wordWrap = 'break-word'
-    mirror.style.overflow = 'hidden'
-    mirror.style.top = '0'
-    mirror.style.left = '0'
-    document.body.appendChild(mirror)
-    return mirror
-  }
-
-  private updateMirrorElement(): void {
-    if (!this.mirrorElement) return
-
-    const styles = window.getComputedStyle(this.element)
-    const rect = this.element.getBoundingClientRect()
-    const scrollTop = window.scrollY || document.documentElement.scrollTop
-    const scrollLeft = window.scrollX || document.documentElement.scrollLeft
-
-    this.mirrorElement.style.position = 'absolute'
-    this.mirrorElement.style.left = `${rect.left + scrollLeft}px`
-    this.mirrorElement.style.top = `${rect.top + scrollTop}px`
-    this.mirrorElement.style.width = `${rect.width}px`
-    this.mirrorElement.style.height = `${rect.height}px`
-    this.mirrorElement.style.font = styles.font
-    this.mirrorElement.style.fontSize = styles.fontSize
-    this.mirrorElement.style.fontFamily = styles.fontFamily
-    this.mirrorElement.style.fontWeight = styles.fontWeight
-    this.mirrorElement.style.fontStyle = styles.fontStyle
-    this.mirrorElement.style.letterSpacing = styles.letterSpacing
-    this.mirrorElement.style.textTransform = styles.textTransform
-    this.mirrorElement.style.padding = styles.padding
-    this.mirrorElement.style.paddingLeft = styles.paddingLeft
-    this.mirrorElement.style.paddingRight = styles.paddingRight
-    this.mirrorElement.style.paddingTop = styles.paddingTop
-    this.mirrorElement.style.paddingBottom = styles.paddingBottom
-    this.mirrorElement.style.border = styles.border
-    this.mirrorElement.style.borderLeft = styles.borderLeft
-    this.mirrorElement.style.borderRight = styles.borderRight
-    this.mirrorElement.style.borderTop = styles.borderTop
-    this.mirrorElement.style.borderBottom = styles.borderBottom
-    this.mirrorElement.style.boxSizing = styles.boxSizing
-    this.mirrorElement.style.lineHeight = styles.lineHeight
-    this.mirrorElement.style.textIndent = styles.textIndent
-    this.mirrorElement.style.direction = styles.direction
-    this.mirrorElement.style.textAlign = styles.textAlign
-    this.mirrorElement.style.whiteSpace = styles.whiteSpace || 'pre-wrap'
-    this.mirrorElement.style.wordWrap = styles.wordWrap || 'break-word'
-    this.mirrorElement.style.overflow = styles.overflow || 'hidden'
-    this.mirrorElement.style.overflowWrap = styles.overflowWrap || 'break-word'
-    this.mirrorElement.style.display = styles.display || 'block'
-
-    // Ensure font properties are copied exactly
-    this.mirrorElement.style.fontVariant = styles.fontVariant
-    this.mirrorElement.style.fontStretch = styles.fontStretch
-    this.mirrorElement.style.fontSizeAdjust = styles.fontSizeAdjust
-    this.mirrorElement.style.fontKerning = styles.fontKerning
-
-    if (this.element instanceof HTMLInputElement) {
-      this.mirrorElement.style.whiteSpace = 'pre'
-    } else if (this.element instanceof HTMLTextAreaElement) {
-      this.mirrorElement.style.whiteSpace = 'pre-wrap'
-      this.mirrorElement.style.overflow = 'hidden'
-    }
+    return createMirrorElement()
   }
 
   private init(): void {
@@ -208,17 +144,11 @@ export class Magicaret {
     const scrollTop = window.scrollY || document.documentElement.scrollTop
     const scrollLeft = window.scrollX || document.documentElement.scrollLeft
 
-    // Update current position from DOM for trail
-    const caretRect = this.caretElement.getBoundingClientRect()
-    this.currentPosition = {
-      x: caretRect.left + scrollLeft,
-      y: caretRect.top + scrollTop
-    }
-
-    // this.addTrailParticle() // Removed, handled in animation loop
-
     if (this.element instanceof HTMLInputElement || this.element instanceof HTMLTextAreaElement) {
-      const caretPos = this.getInputCaretPosition()
+      if (this.mirrorElement) {
+        updateMirrorElement(this.element, this.mirrorElement)
+      }
+      const caretPos = getCaretPosition(this.element, this.mirrorElement)
       if (caretPos) {
         this.targetPosition = {
           x: caretPos.x,
@@ -229,28 +159,14 @@ export class Magicaret {
       } else {
         this.element.style.caretColor = 'auto'
         this.caretElement.style.display = 'none'
-        // Don't return, let it fall through to updateCaretElement which will hide it effectively
-        // Actually, we should just stop here for this frame
         return
       }
     } else {
-      const selection = window.getSelection()
-
-      if (selection && selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0)
-        const rects = range.getClientRects()
-
-        if (rects.length > 0) {
-          const caretRect = rects[rects.length - 1]
-          this.targetPosition = {
-            x: caretRect.left + scrollLeft,
-            y: caretRect.top + scrollTop,
-          }
-        } else {
-          this.targetPosition = {
-            x: rect.left + scrollLeft,
-            y: rect.top + scrollTop,
-          }
+      const caretPos = getCaretPosition(this.element, null)
+      if (caretPos) {
+        this.targetPosition = {
+          x: caretPos.x,
+          y: caretPos.y,
         }
       } else {
         this.targetPosition = {
@@ -266,55 +182,6 @@ export class Magicaret {
       this.lastTargetPosition = { ...this.targetPosition }
       this.triggerBurst()
     }
-  }
-
-  private getInputCaretPosition(): { x: number; y: number } | null {
-    if (!this.mirrorElement) return null
-
-    this.updateMirrorElement()
-
-    const element = this.element as HTMLInputElement | HTMLTextAreaElement
-    let selectionStart: number | null = null
-    try {
-      selectionStart = element.selectionStart
-    } catch (e) {
-      // ignore
-    }
-
-    if (selectionStart === null) {
-      return null
-    }
-
-    const textBeforeCaret = element.value.substring(0, selectionStart)
-    const textAfterCaret = element.value.substring(selectionStart)
-
-    this.mirrorElement.innerHTML = ''
-
-    const beforeSpan = document.createElement('span')
-    beforeSpan.textContent = textBeforeCaret
-    this.mirrorElement.appendChild(beforeSpan)
-
-    const caretSpan = document.createElement('span')
-    caretSpan.textContent = '|'
-    this.mirrorElement.appendChild(caretSpan)
-
-    const afterSpan = document.createElement('span')
-    afterSpan.textContent = textAfterCaret
-    this.mirrorElement.appendChild(afterSpan)
-
-    const spanRect = caretSpan.getBoundingClientRect()
-    const scrollTop = window.scrollY || document.documentElement.scrollTop
-    const scrollLeft = window.scrollX || document.documentElement.scrollLeft
-
-    const elementScrollLeft = element.scrollLeft
-    const elementScrollTop = element.scrollTop
-
-    const x = spanRect.left + scrollLeft - elementScrollLeft
-    const y = spanRect.top + scrollTop - elementScrollTop
-
-    this.mirrorElement.innerHTML = ''
-
-    return { x, y }
   }
 
   private addTrailParticle(x: number, y: number): void {
