@@ -30,9 +30,7 @@ label {
   font-size: 14px;
 }
 
-input[type="text"],
-input[type="email"],
-textarea {
+.magicaret-input {
   width: 100%;
   padding: 15px;
   border: 2px solid #e0e0e0;
@@ -43,13 +41,11 @@ textarea {
   font-family: inherit;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-textarea:focus {
+.magicaret-input:focus {
   border-color: #667eea;
 }
 
-textarea {
+.magicaret-input:where(textarea) {
   min-height: 120px;
   resize: vertical;
 }

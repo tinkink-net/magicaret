@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useMagicaretDirective } from 'magicaret/react'
+import './App.css'
 
 const styles = ['default', 'neon', 'rainbow', 'fire', 'ocean', 'purple', 'green', 'pink'] as const
 
@@ -33,7 +34,9 @@ function App() {
         <label htmlFor="name">Your Name:</label>
         <input
           id="name"
+          type="text"
           ref={nameRef as any}
+          className="magicaret-input"
           placeholder="Type your name here..."
         />
       </div>
@@ -44,6 +47,7 @@ function App() {
           id="email"
           type="email"
           ref={emailRef as any}
+          className="magicaret-input"
           placeholder="your@email.com"
         />
       </div>
@@ -53,6 +57,7 @@ function App() {
         <textarea
           id="message"
           ref={messageRef as any}
+          className="magicaret-input"
           placeholder="Write your message here..."
         ></textarea>
       </div>

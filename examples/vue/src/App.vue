@@ -21,7 +21,9 @@
       <label for="name">Your Name:</label>
       <input
         id="name"
+        type="text"
         v-magicaret="{ style: selectedStyle }"
+        class="magicaret-input"
         placeholder="Type your name here..."
       />
     </div>
@@ -30,8 +32,9 @@
       <label for="email">Email Address:</label>
       <input
         id="email"
-        v-magicaret="{ style: selectedStyle }"
         type="email"
+        v-magicaret="{ style: selectedStyle }"
+        class="magicaret-input"
         placeholder="your@email.com"
       />
     </div>
@@ -41,6 +44,7 @@
       <textarea
         id="message"
         v-magicaret="{ style: selectedStyle }"
+        class="magicaret-input"
         placeholder="Write your message here..."
       ></textarea>
     </div>
@@ -78,9 +82,7 @@ body {
 </style>
 
 <style>
-input[type="text"],
-input[type="email"],
-textarea {
+.magicaret-input {
   width: 100%;
   padding: 15px;
   border: 2px solid #e0e0e0;
@@ -91,13 +93,12 @@ textarea {
   font-family: inherit;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-textarea:focus {
+.magicaret-input:focus {
   border-color: #667eea;
 }
 
-textarea {
+.magicaret-input[type="textarea"],
+.magicaret-input:where(textarea) {
   min-height: 120px;
   resize: vertical;
 }
